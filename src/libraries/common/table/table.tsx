@@ -6,12 +6,19 @@ type TableProps<TData> = {
   columns: ColumnDef<TData, unknown>[];
   data: TData[];
   className?: string;
+  loading?: boolean;
   customClass?: {
     wrap?: string;
     table?: string;
   };
 };
-export function Table<TData>({ columns, data, className, customClass }: TableProps<TData>) {
+export function Table<TData>({
+  columns,
+  data,
+  loading,
+  className,
+  customClass
+}: TableProps<TData>) {
   const table = useReactTable({
     columns,
     data,
@@ -38,13 +45,32 @@ export function Table<TData>({ columns, data, className, customClass }: TablePro
 
         {/* body */}
         <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-              ))}
+          {loading ? (
+            <tr>
+              <td colSpan={columns.length} className="text-center py-4">
+                <span className="loading loading-spinner loading-lg"></span>
+              </td>
             </tr>
-          ))}
+          ) : table.getRowModel().rows.length > 0 ? (
+            table.getRowModel().rows.map((row, index) => (
+              <tr
+                key={row.id}
+                className={clsx({
+                  hover: index % 2 === 0
+                })}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                ))}
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={columns.length} className="text-center py-4">
+                No data available
+              </td>
+            </tr>
+          )}
         </tbody>
 
         {/* footer */}

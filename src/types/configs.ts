@@ -15,3 +15,13 @@ export enum EConfigType {
   Luxury = 'luxury',
   Premium = 'premium'
 }
+
+export type ConfigBody = {
+  room_fee: number;
+  water_fee: number;
+  electric_fee: number;
+  common_service_fee: number;
+  internet_fee: number;
+  type: EConfigType;
+  is_special_room?: boolean;
+};

@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 type ConfigListUtilsUtils = {
   loading: boolean;
   data: ConfigItem[];
+  onEdit: (item: ConfigItem) => void;
+  onDelete: (item: ConfigItem) => void;
 };
 export default function ConfigListUtils(): ConfigListUtilsUtils {
   const [loading, setLoading] = useState<boolean>(false);
@@ -17,8 +19,8 @@ export default function ConfigListUtils(): ConfigListUtilsUtils {
 
   const fetchingData = async () => {
     try {
-      setLoading(true);
       if (loading) return;
+      setLoading(true);
       const res = await apiGetConfigs();
       setData(res.data);
       setLoading(false);
@@ -27,8 +29,13 @@ export default function ConfigListUtils(): ConfigListUtilsUtils {
     }
   };
 
+  const onEdit = (item: ConfigItem) => console.log('view===>', item);
+  const onDelete = (item: ConfigItem) => console.log('view===>', item);
+
   return {
     data,
-    loading
+    loading,
+    onEdit,
+    onDelete
   };
 }
