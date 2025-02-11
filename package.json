@@ -6,13 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write \"./src/**/*.{ts,tsx,json,css,scss,less}\" --config ./.prettierrc"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.48.1",
+    "@tanstack/react-table": "^8.20.6",
+    "clsx": "^2.1.1",
     "next": "14.2.23",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "sass": "^1.84.0"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -22,6 +26,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.23",
     "postcss": "^8",
+    "prettier": "^3.5.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

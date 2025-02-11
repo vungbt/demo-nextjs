@@ -1,3 +1,4 @@
+import { ConfigItem } from '@/types/configs';
 import { supabase } from '../supabase';
 
 const TableName = {
@@ -5,9 +6,7 @@ const TableName = {
 };
 export const apiGetConfigs = async () => {
   const res = await supabase.from(TableName.Configs).select('*');
-  console.log("res===><", res)
-  const modifyRes: any[] = (res.data ?? [])
-  console.log(":modifyRes====>", modifyRes)
+  const modifyRes: ConfigItem[] = res.data ?? [];
   if (res.status === 200) return { data: modifyRes };
   return { data: [] };
 };
