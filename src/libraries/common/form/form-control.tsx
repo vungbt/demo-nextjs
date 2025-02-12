@@ -6,26 +6,33 @@ type FormControlProps = {
   label?: string;
   message?: string;
   required?: boolean;
+  className?: string;
 };
-export function FormControl({ children, label, message, required }: FormControlProps) {
+export function FormControl({ children, label, message, required, className }: FormControlProps) {
   return (
-    <label className="form-control">
+    <label className={clsx('form-control', className)}>
       {/* label */}
-      <div className="label">
-        <span
-          className={clsx('label-text relative', {
-            'before:content-["*"] before:absolute before:text-error before:top-0 before:-right-2':
-              required
-          })}
-        >
-          {label}
-        </span>
-      </div>
+
+      {label && (
+        <div className="label pt-0">
+          <span
+            className={clsx('label-text relative', {
+              'before:content-["*"] before:absolute before:text-error before:top-0 before:-right-2':
+                required
+            })}
+          >
+            {label}
+          </span>
+        </div>
+      )}
       {children}
+
       {/* mess error */}
-      <div className="label">
-        <span className="label-text text-error">{message}</span>
-      </div>
+      {message && (
+        <div className="label pb-0">
+          <span className="label-text text-error">{message}</span>
+        </div>
+      )}
     </label>
   );
 }

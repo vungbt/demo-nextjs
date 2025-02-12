@@ -13,7 +13,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="grid grid-cols-5 gap-3 h-screen overflow-hidden">
         <HeaderLayout className="col-span-1" />
-        <main className="col-span-4">
+        <main className="col-span-4 pl-3 pr-6">
           <TopBarProvider>
             <TopBar />
             {children}

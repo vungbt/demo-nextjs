@@ -3,13 +3,13 @@ import { ConfigItem } from '@/types/configs';
 import { apiGetConfigs } from '@/utils/apis/configs';
 import { useEffect, useState } from 'react';
 
-type ConfigListUtilsUtils = {
+type ConfigListUtilsResult = {
   loading: boolean;
   data: ConfigItem[];
   onEdit: (item: ConfigItem) => void;
   onDelete: (item: ConfigItem) => void;
 };
-export default function ConfigListUtils(): ConfigListUtilsUtils {
+export default function ConfigListUtils(): ConfigListUtilsResult {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<ConfigItem[]>([]);
 

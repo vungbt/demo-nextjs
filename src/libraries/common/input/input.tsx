@@ -8,38 +8,61 @@ type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> & {
   iconLeft?: IconName;
   isLoading?: boolean;
   size?: 'xs' | 'lg' | 'sm';
-  variant?: 'neutral' | 'primary' | 'secondary' | 'accent' | 'ghost' | 'link';
+  variant?: 'primary' | 'secondary' | 'accent' | 'ghost';
   error?: string;
   isError?: boolean;
 
   label?: string;
   required?: boolean;
+  className?: string;
+  customClass?: { wrap?: string; input?: string };
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { icon, iconLeft, isLoading, variant, size, error, isError, label, required, ...reset },
+    {
+      icon,
+      iconLeft,
+      isLoading,
+      variant,
+      size,
+      error,
+      isError,
+      label,
+      required,
+      className,
+      customClass,
+      ...reset
+    },
     ref
   ) => {
     return (
-      <FormControl label={label} message={error} required={required}>
+      <FormControl
+        label={label}
+        message={error}
+        required={required}
+        className={clsx(customClass?.wrap, className)}
+      >
         <label
-          className={clsx('input input-bordered flex items-center gap-2', {
-            'btn-neutral': variant === 'neutral',
-            'btn-primary': variant === 'primary',
-            'btn-secondary': variant === 'secondary',
-            'btn-accent': variant === 'accent',
-            'btn-ghost': variant === 'ghost',
-            'btn-link': variant === 'link',
+          className={clsx(
+            'input input-bordered flex items-center gap-2',
+            className,
+            customClass?.input,
+            {
+              'input-primary': variant === 'primary',
+              'input-secondary': variant === 'secondary',
+              'input-accent': variant === 'accent',
+              'input-ghost': variant === 'ghost',
 
-            // size
-            'btn-xs': size === 'xs',
-            'btn-lg': size === 'lg',
-            'btn-sm': size === 'sm',
+              // size
+              'input-xs': size === 'xs',
+              'input-lg': size === 'lg',
+              'input-sm': size === 'sm',
 
-            // error
-            'input-error': isError || !!error
-          })}
+              // error
+              'input-error': isError || !!error
+            }
+          )}
         >
           {iconLeft && <RenderIcon name={iconLeft} className="inline-block !w-4 !h-4" />}
           <input type="text" ref={ref} className="grow" placeholder="Search" {...reset} />
