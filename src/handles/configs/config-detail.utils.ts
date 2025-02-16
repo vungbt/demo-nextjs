@@ -1,8 +1,10 @@
+import { RouterPaths } from '@/constants/common';
 import { ESlugAction } from '@/types';
 import { ConfigBody, ConfigItem, EConfigType } from '@/types/configs';
-import { apiGetConfig } from '@/utils/apis/configs';
+import { apiCreateConfig, apiGetConfig, apiUpdateConfig } from '@/utils/apis/configs';
+import { toastError, toastSuccess } from '@/utils/helpers/toast';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
@@ -54,6 +56,7 @@ const schema = yup.object().shape({
 });
 
 export default function ConfigDetailUtils(): ConfigDetailUtilsResult {
+  const router = useRouter();
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const params = useParams<{ slug: string }>();
   const isAdd = params.slug === ESlugAction.Add;
@@ -88,14 +91,14 @@ export default function ConfigDetailUtils(): ConfigDetailUtilsResult {
   });
 
   useEffect(() => {
-    if(configDetail && !isAdd) {
-      reactForm.setValue("room_fee", configDetail.room_fee)
-      reactForm.setValue("water_fee", configDetail.water_fee)
-      reactForm.setValue("electric_fee", configDetail.electric_fee)
-      reactForm.setValue("common_service_fee", configDetail.common_service_fee)
-      reactForm.setValue("internet_fee", configDetail.internet_fee)
-      reactForm.setValue("type", configDetail.type)
-      reactForm.setValue("is_special_room", configDetail.is_special_room)
+    if (configDetail && !isAdd) {
+      reactForm.setValue('room_fee', configDetail.room_fee);
+      reactForm.setValue('water_fee', configDetail.water_fee);
+      reactForm.setValue('electric_fee', configDetail.electric_fee);
+      reactForm.setValue('common_service_fee', configDetail.common_service_fee);
+      reactForm.setValue('internet_fee', configDetail.internet_fee);
+      reactForm.setValue('type', configDetail.type);
+      reactForm.setValue('is_special_room', configDetail.is_special_room);
     }
   }, [configDetail, isAdd, reactForm]);
 
@@ -103,8 +106,25 @@ export default function ConfigDetailUtils(): ConfigDetailUtilsResult {
     submitButtonRef.current?.click();
   }, [submitButtonRef]);
 
-  const onSubmit: SubmitHandler<ConfigBody> = (data: ConfigBody) => {
-    console.log('Search Query:', data);
+  const onSubmit: SubmitHandler<ConfigBody> = async (data: ConfigBody) => {
+    if (isAdd) {
+      const res = await apiCreateConfig(data);
+      if (res && Object.keys(res).length > 0) {
+        toastSuccess('Create config successfully.');
+      } else {
+        toastSuccess('Create config failed.');
+      }
+      return router.push(RouterPaths.Configs);
+    } else {
+      if (!configId) return toastError('Config item not found.');
+      const res = await apiUpdateConfig(configId, data);
+      if (res && Object.keys(res).length > 0) {
+        toastSuccess('Edit config successfully.');
+      } else {
+        toastSuccess('Edit config failed.');
+      }
+      return router.push(RouterPaths.Configs);
+    }
   };
 
   return {

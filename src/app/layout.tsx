@@ -3,6 +3,7 @@ import '@/styles/globals.scss';
 import HeaderLayout from '@/libraries/layout/header.layout';
 import { TopBarProvider } from '@/hooks/top-bar';
 import TopBar from '@/libraries/layout/top-bar';
+import { Toaster } from 'react-hot-toast';
 
 export default function RootLayout({
   children
@@ -16,6 +17,7 @@ export default function RootLayout({
         <main className="col-span-4 pl-3 pr-6">
           <TopBarProvider>
             <TopBar />
+            <Toaster />
             {children}
           </TopBarProvider>
         </main>
