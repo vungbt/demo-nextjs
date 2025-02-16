@@ -10,7 +10,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function ConfigPage() {
-  const { data, loading, itemNeedDelete, onEdit, onDelete, setItemNeedDelete, onConfirmDelete } = ConfigListUtils();
+  const { data, loading, itemNeedDelete, onEdit, onDelete, setItemNeedDelete, onConfirmDelete } =
+    ConfigListUtils();
   const { actions } = useTopBar();
   const router = useRouter();
 
@@ -41,7 +42,11 @@ export default function ConfigPage() {
         loading={loading}
         customClass={{ wrap: 'h-96', table: 'table-pin-cols' }}
       />
-      <ConfigModal isOpen={true} onClose={() => setItemNeedDelete(null)} onConfirm={onConfirmDelete} />
+      <ConfigModal
+        isOpen={!!itemNeedDelete}
+        onClose={() => setItemNeedDelete(null)}
+        onConfirm={onConfirmDelete}
+      />
     </div>
   );
 }

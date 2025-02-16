@@ -24,7 +24,6 @@ export const ConfigColumn = ({
       cell: (props) => (
         <CellLink
           href={`${RouterPaths.Configs}/${props.row.original.id}`}
-          className="capitalize cursor-pointer text-info"
           content={props.row.original.type}
         />
       )

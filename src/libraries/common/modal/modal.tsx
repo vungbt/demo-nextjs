@@ -42,7 +42,8 @@ export function ModalWrap({
           <button
             type="button"
             onClick={onClose}
-            className="text-neutral-content border border-none outline-none">
+            className="text-neutral-content border border-none outline-none"
+          >
             <RenderIcon name="close-circle" />
           </button>
         </div>

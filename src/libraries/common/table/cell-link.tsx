@@ -10,7 +10,7 @@ type CellLinkProps = {
 
 export function CellLink({ content, href = '', className }: CellLinkProps) {
   return (
-    <Link href={href} className={clsx(className)}>
+    <Link href={href} className={clsx(className, 'block capitalize cursor-pointer text-info')}>
       {content}
     </Link>
   );

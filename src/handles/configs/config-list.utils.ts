@@ -1,19 +1,20 @@
 'use client';
 import { RouterPaths } from '@/constants/common';
+import { PaginationParams } from '@/types';
 import { ConfigItem } from '@/types/configs';
-import { apiGetConfigs } from '@/utils/apis/configs';
-import { toastError } from '@/utils/helpers/toast';
+import { apiDeleteConfig, apiGetConfigs } from '@/utils/apis/configs';
+import { toastError, toastSuccess } from '@/utils/helpers/toast';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 type ConfigListUtilsResult = {
   loading: boolean;
   data: ConfigItem[];
-  itemNeedDelete: ConfigItem | null
+  itemNeedDelete: ConfigItem | null;
   onEdit: (item: ConfigItem) => void;
   onDelete: (item: ConfigItem) => void;
-  setItemNeedDelete: (item: ConfigItem | null) => void
-  onConfirmDelete: () => void
+  setItemNeedDelete: (item: ConfigItem | null) => void;
+  onConfirmDelete: () => void;
 };
 export default function ConfigListUtils(): ConfigListUtilsResult {
   const router = useRouter();
@@ -21,16 +22,18 @@ export default function ConfigListUtils(): ConfigListUtilsResult {
   const [data, setData] = useState<ConfigItem[]>([]);
 
   const [itemNeedDelete, setItemNeedDelete] = useState<ConfigItem | null>(null);
+  const [pagination, setPagination] = useState<PaginationParams>({ page: 1, limit: 10 });
 
   useEffect(() => {
-    fetchingData();
-  }, []);
+    fetchingData(pagination);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pagination]);
 
-  const fetchingData = async () => {
+  const fetchingData = async (params: PaginationParams) => {
     try {
       if (loading) return;
       setLoading(true);
-      const res = await apiGetConfigs();
+      const res = await apiGetConfigs(params);
       setData(res.data);
       setLoading(false);
     } catch {
@@ -44,9 +47,14 @@ export default function ConfigListUtils(): ConfigListUtilsResult {
   };
   const onDelete = (item: ConfigItem) => setItemNeedDelete(item);
 
-  const onConfirmDelete = () => {
+  const onConfirmDelete = async () => {
     if (!itemNeedDelete || !itemNeedDelete.id) return toastError('Config record not found.');
-  }
+    const res = await apiDeleteConfig(itemNeedDelete.id);
+    if (!res) return toastError('Deleted config failed.');
+    setPagination({ ...pagination, page: 1 });
+    toastSuccess('Delete config successfully.');
+    setItemNeedDelete(null);
+  };
 
   return {
     data,
