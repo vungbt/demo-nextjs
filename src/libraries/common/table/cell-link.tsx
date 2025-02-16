@@ -5,8 +5,13 @@ import React, { ReactNode } from 'react';
 type CellLinkProps = {
   content: ReactNode | string | number;
   className?: string;
-  href: string
+  href?: string;
 };
-export function CellLink({ content, href, className }: CellLinkProps) {
-  return <Link href={href} className={clsx(className)}>{content}</Link>;
+
+export function CellLink({ content, href = '', className }: CellLinkProps) {
+  return (
+    <Link href={href} className={clsx(className)}>
+      {content}
+    </Link>
+  );
 }
