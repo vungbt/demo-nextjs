@@ -1,6 +1,9 @@
-import { ConfigBody, EConfigType } from '@/types/configs';
+import { ESlugAction } from '@/types';
+import { ConfigBody, ConfigItem, EConfigType } from '@/types/configs';
+import { apiGetConfig } from '@/utils/apis/configs';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { RefObject, useCallback, useRef } from 'react';
+import { useParams } from 'next/navigation';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -8,6 +11,7 @@ type ConfigDetailUtilsResult = {
   onSave: () => void;
   onSubmit: (data: ConfigBody) => void;
   reactForm: UseFormReturn<ConfigBody>;
+  configDetail: ConfigItem | null;
   submitButtonRef: RefObject<HTMLButtonElement>;
 };
 
@@ -51,15 +55,53 @@ const schema = yup.object().shape({
 
 export default function ConfigDetailUtils(): ConfigDetailUtilsResult {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
+  const params = useParams<{ slug: string }>();
+  const isAdd = params.slug === ESlugAction.Add;
+  const configId = isAdd ? '' : params.slug;
 
-  const onSave = useCallback(() => {
-    submitButtonRef.current?.click();
-  }, [submitButtonRef]);
+  // detail
+  const [loadingDetail, setLoadingDetail] = useState<boolean>(false);
+  const [configDetail, setConfigDetail] = useState<ConfigItem | null>(null);
+
+  useEffect(() => {
+    if (configId) {
+      fetchingDetail();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [configId]);
+
+  const fetchingDetail = async () => {
+    try {
+      if (!configId || loadingDetail) return;
+      setLoadingDetail(true);
+      const res = await apiGetConfig(configId);
+      setConfigDetail(res);
+      setLoadingDetail(false);
+    } catch {
+      setLoadingDetail(false);
+    }
+  };
 
   const reactForm = useForm<ConfigBody>({
     defaultValues: { room_fee: undefined, is_special_room: false, type: EConfigType.Deluxe },
     resolver: yupResolver(schema)
   });
+
+  useEffect(() => {
+    if(configDetail && !isAdd) {
+      reactForm.setValue("room_fee", configDetail.room_fee)
+      reactForm.setValue("water_fee", configDetail.water_fee)
+      reactForm.setValue("electric_fee", configDetail.electric_fee)
+      reactForm.setValue("common_service_fee", configDetail.common_service_fee)
+      reactForm.setValue("internet_fee", configDetail.internet_fee)
+      reactForm.setValue("type", configDetail.type)
+      reactForm.setValue("is_special_room", configDetail.is_special_room)
+    }
+  }, [configDetail, isAdd, reactForm]);
+
+  const onSave = useCallback(() => {
+    submitButtonRef.current?.click();
+  }, [submitButtonRef]);
 
   const onSubmit: SubmitHandler<ConfigBody> = (data: ConfigBody) => {
     console.log('Search Query:', data);
@@ -67,6 +109,7 @@ export default function ConfigDetailUtils(): ConfigDetailUtilsResult {
 
   return {
     reactForm,
+    configDetail,
     submitButtonRef,
     onSave,
     onSubmit

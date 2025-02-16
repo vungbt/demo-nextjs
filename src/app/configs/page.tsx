@@ -4,6 +4,7 @@ import ConfigListUtils from '@/handles/configs/config-list.utils';
 import { useTopBar } from '@/hooks/top-bar';
 import { Button, CellView, Table } from '@/libraries/common';
 import CellActions from '@/libraries/common/table/cell-actions';
+import { CellLink } from '@/libraries/common/table/cell-link';
 import { ConfigItem } from '@/types/configs';
 import { formatDate, formatPrice } from '@/utils/helpers/formatter';
 import { ColumnDef } from '@tanstack/react-table';
@@ -40,7 +41,13 @@ export default function ConfigPage() {
     {
       accessorKey: 'type',
       header: 'Type',
-      cell: (props) => <CellView className="capitalize" content={props.row.original.type} />
+      cell: (props) => (
+        <CellLink
+          href={`${RouterPaths.Configs}/${props.row.original.id}`}
+          className="capitalize"
+          content={props.row.original.type}
+        />
+      )
     },
     {
       accessorKey: 'room_fee',

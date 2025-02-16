@@ -1,4 +1,4 @@
-import { ConfigItem } from '@/types/configs';
+import { ConfigBody, ConfigItem } from '@/types/configs';
 import { supabase } from '../supabase';
 
 const TableName = {
@@ -11,29 +11,102 @@ export const apiGetConfigs = async () => {
   return { data: [] };
 };
 
-// export const apiAddNewMessage = async (body: any) => {
-//   const res = await supabase
-//     .from(TableName.Configs)
-//     .insert([
-//       {
-//         created_at: new Date(),
-//         content: body.content,
-//         author: body.author,
-//         guests: body.guests,
-//         is_attend: body.isAttend
-//       }
-//     ])
-//     .select('*');
-//   let data: MessageItem | null = null;
-//   if (res.error === null && res.data.length > 0) {
-//     const modifyRes: MessageItem[] = (res.data ?? []).map((item) => ({
-//       author: item?.author,
-//       content: item?.content,
-//       createdAt: item?.created_at,
-//       isAttend: item?.isAttend,
-//       guests: item?.guests
-//     }));
-//     data = modifyRes[0];
-//   }
-//   return data;
-// };
+export const apiCreateConfig = async (body: ConfigBody) => {
+  const res = await supabase
+    .from(TableName.Configs)
+    .insert([
+      {
+        ...body
+      }
+    ])
+    .select('*');
+  let data: ConfigItem | null = null;
+  if (res.error === null && res.data.length > 0) {
+    const modifyRes: ConfigItem[] = (res.data ?? []).map(
+      (item: ConfigItem) =>
+        ({
+          room_fee: item.room_fee,
+          water_fee: item.water_fee,
+          electric_fee: item.electric_fee,
+          common_service_fee: item.common_service_fee,
+          internet_fee: item.internet_fee,
+          type: item.type,
+          is_special_room: item.is_special_room
+        }) as ConfigItem
+    );
+    data = modifyRes[0];
+  }
+  return data;
+};
+
+export const apiUpdateConfig = async (id: number, body: ConfigBody) => {
+  if (!id) return;
+  const res = await supabase
+    .from(TableName.Configs)
+    .update({
+      ...body
+    })
+    .eq('id', id)
+    .select('*');
+  let data: ConfigItem | null = null;
+  if (res.error === null && res.data.length > 0) {
+    console.log('data===>', data);
+    // const modifyRes: ConfigItem[] = (res.data ?? []).map(
+    //   (item: ConfigItem) =>
+    //     ({
+    //       room_fee: item.room_fee,
+    //       water_fee: item.water_fee,
+    //       electric_fee: item.electric_fee,
+    //       common_service_fee: item.common_service_fee,
+    //       internet_fee: item.internet_fee,
+    //       type: item.type,
+    //       is_special_room: item.is_special_room
+    //     }) as ConfigItem
+    // );
+    // data = modifyRes[0];
+  }
+  return data;
+};
+
+export const apiDeleteConfig = async (id: number) => {
+  const res = await supabase.from(TableName.Configs).delete().eq('id', id);
+  let data: ConfigItem | null = null;
+  console.log('res===>', res);
+  // if (res.error === null && res.data.length > 0) {
+  //   const modifyRes: ConfigItem[] = (res.data ?? []).map(
+  //     (item: ConfigItem) =>
+  //       ({
+  //         room_fee: item.room_fee,
+  //         water_fee: item.water_fee,
+  //         electric_fee: item.electric_fee,
+  //         common_service_fee: item.common_service_fee,
+  //         internet_fee: item.internet_fee,
+  //         type: item.type,
+  //         is_special_room: item.is_special_room
+  //       }) as ConfigItem
+  //   );
+  //   data = modifyRes[0];
+  // }
+  return data;
+};
+
+export const apiGetConfig = async (id: number | string) => {
+  const res = await supabase.from(TableName.Configs).select('*').eq('id', id);
+  let data: ConfigItem | null = null;
+  if (res.error === null && res.data.length > 0) {
+    const modifyRes: ConfigItem[] = (res.data ?? []).map(
+      (item: ConfigItem) =>
+        ({
+          room_fee: item.room_fee,
+          water_fee: item.water_fee,
+          electric_fee: item.electric_fee,
+          common_service_fee: item.common_service_fee,
+          internet_fee: item.internet_fee,
+          type: item.type,
+          is_special_room: item.is_special_room
+        }) as ConfigItem
+    );
+    data = modifyRes[0];
+  }
+  return data;
+};
