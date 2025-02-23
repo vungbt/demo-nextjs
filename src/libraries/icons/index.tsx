@@ -13,6 +13,7 @@ import Sms from './sms';
 import Trash from './trash';
 import Users from './users';
 import Loading from './loading';
+import House from './house';
 
 export type IconProps = {
   className?: string;
@@ -37,7 +38,8 @@ const IconsDefine = {
   sms: 'sms',
   trash: 'trash',
   users: 'users',
-  loading: 'loading'
+  loading: 'loading',
+  house: 'house'
 } as const;
 
 export type IconName = keyof typeof IconsDefine;
@@ -86,6 +88,9 @@ export const Icons: IconsType = {
   },
   loading: (props: IconProps) => {
     return <Loading {...props} />;
+  },
+  house: (props: IconProps) => {
+    return <House {...props} />;
   }
 };
 

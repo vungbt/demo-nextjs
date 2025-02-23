@@ -11,7 +11,8 @@ export const apiGetConfigs = async ({ page, limit }: PaginationParams) => {
   const res = await supabase
     .from(TableName.Configs)
     .select('*')
-    .range(pagination.start, pagination.end);
+    .range(pagination.start, pagination.end)
+    .order('room_fee', { ascending: true });
   const modifyRes: ConfigItem[] = res.data ?? [];
   if (res.status === 200) return { data: modifyRes };
   return { data: [] };
@@ -54,7 +55,6 @@ export const apiUpdateConfig = async (id: number | string, body: ConfigBody) => 
     })
     .eq('id', id)
     .select('*');
-  console.log('res===>', res);
   let data: ConfigItem | null = null;
   if (res.error === null && res.data.length > 0) {
     const modifyRes: ConfigItem[] = (res.data ?? []).map(

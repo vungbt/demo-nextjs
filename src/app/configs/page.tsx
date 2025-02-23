@@ -40,7 +40,7 @@ export default function ConfigPage() {
         })}
         data={data}
         loading={loading}
-        customClass={{ wrap: 'h-96', table: 'table-pin-cols' }}
+        customClass={{ wrap: 'h-full', table: 'table-pin-cols' }}
       />
       <ConfigModal
         isOpen={!!itemNeedDelete}

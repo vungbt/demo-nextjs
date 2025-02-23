@@ -21,6 +21,7 @@ export default function HeaderLayout({ className }: HeaderLayoutProps) {
     { name: 'Home', path: RouterPaths.Home, icon: 'home' },
     { name: 'Manager', path: RouterPaths.Manager, icon: 'chart' },
     { name: 'Users', path: RouterPaths.Users, icon: 'users' },
+    { name: 'Rooms', path: RouterPaths.Rooms, icon: 'house' },
     { name: 'Configs', path: RouterPaths.Configs, icon: 'setting' }
   ];
   return (

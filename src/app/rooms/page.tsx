@@ -1,31 +1,31 @@
 'use client';
 import { RouterPaths } from '@/constants/common';
-import UserListUtils from '@/handles/users/user-list.utils';
+import RoomListUtils from '@/handles/rooms/room-list.utils';
 import { useTopBar } from '@/hooks/top-bar';
 import { Button, Table } from '@/libraries/common';
-import { UserItem } from '@/types';
-import { UserModal } from '@/views/user/user-modal';
-import { UserColumn } from '@/views/user/user.column';
+import { RoomItem } from '@/types';
+import { RoomModal } from '@/views/room/room-modal';
+import { RoomColumn } from '@/views/room/room.column';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
-export default function UsersPage() {
+export default function RoomsPage() {
   const { data, loading, itemNeedDelete, onEdit, onDelete, setItemNeedDelete, onConfirmDelete } =
-    UserListUtils();
+    RoomListUtils();
   const { actions } = useTopBar();
   const router = useRouter();
 
   // render top bar
   useEffect(() => {
     actions.setTopBar({
-      label: 'Users',
+      label: 'Rooms',
       actions: [
         <Button
           key="add"
-          text="Add user"
+          text="Add room"
           size="sm"
           variant="neutral"
-          onClick={() => router.push(`${RouterPaths.Users}/add`)}
+          onClick={() => router.push(`${RouterPaths.Rooms}/add`)}
         />
       ]
     });
@@ -33,8 +33,8 @@ export default function UsersPage() {
 
   return (
     <div>
-      <Table<UserItem>
-        columns={UserColumn({
+      <Table<RoomItem>
+        columns={RoomColumn({
           onDelete,
           onEdit
         })}
@@ -42,7 +42,7 @@ export default function UsersPage() {
         loading={loading}
         customClass={{ wrap: 'h-full', table: 'table-pin-cols' }}
       />
-      <UserModal
+      <RoomModal
         isOpen={!!itemNeedDelete}
         onClose={() => setItemNeedDelete(null)}
         onConfirm={onConfirmDelete}
