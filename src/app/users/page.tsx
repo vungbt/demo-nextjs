@@ -33,15 +33,17 @@ export default function UsersPage() {
 
   return (
     <div>
-      <Table<UserItem>
-        columns={UserColumn({
-          onDelete,
-          onEdit
-        })}
-        data={data}
-        loading={loading}
-        customClass={{ wrap: 'h-full', table: 'table-pin-cols' }}
-      />
+      <div className="max-h-[calc(100vh-64px)] overflow-auto">
+        <Table<UserItem>
+          columns={UserColumn({
+            onDelete,
+            onEdit
+          })}
+          data={data}
+          loading={loading}
+          customClass={{ wrap: 'h-full', table: 'table-pin-cols' }}
+        />
+      </div>
       <UserModal
         isOpen={!!itemNeedDelete}
         onClose={() => setItemNeedDelete(null)}

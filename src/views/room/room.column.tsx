@@ -16,7 +16,7 @@ export const RoomColumn = ({
     {
       accessorKey: 'id',
       header: '#',
-      cell: (props) => <CellView className="capitalize font-bold" content={props.row.original.id} />
+      cell: (props) => <CellView className="capitalize font-bold" content={props.row.id} />
     },
     {
       accessorKey: 'name',
@@ -36,6 +36,11 @@ export const RoomColumn = ({
           content={ConfigTypeLabels[props.row.original.config?.type || EConfigType.Deluxe]}
         />
       )
+    },
+    {
+      accessorKey: 'users',
+      header: 'Members',
+      cell: (props) => <CellView content={props.row.original.users.length} />
     },
     {
       accessorKey: 'created_at',

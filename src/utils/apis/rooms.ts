@@ -6,13 +6,13 @@ import { PaginationParams } from '@/types';
 const TableName = {
   Rooms: 'rooms'
 };
+const commonQuery =
+  '*, config:config_id (id, room_fee, water_fee, electric_fee, common_service_fee, internet_fee, type, is_special_room), users(id)';
 export const apiGetRooms = async ({ page, limit }: PaginationParams) => {
   const pagination = await getPagination({ page, limit });
   const res = await supabase
     .from(TableName.Rooms)
-    .select(
-      '*, config:config_id (id, room_fee, water_fee, electric_fee, common_service_fee, internet_fee, type, is_special_room)'
-    )
+    .select(commonQuery)
     .range(pagination.start, pagination.end)
     .order('name', { ascending: true });
   const modifyRes: RoomItem[] = res.data ?? [];
@@ -73,12 +73,7 @@ export const apiDeleteRoom = async (id: number) => {
 };
 
 export const apiGetRoom = async (id: number | string) => {
-  const res = await supabase
-    .from(TableName.Rooms)
-    .select(
-      '*, config:config_id (id, room_fee, water_fee, electric_fee, common_service_fee, internet_fee, type, is_special_room)'
-    )
-    .eq('id', id);
+  const res = await supabase.from(TableName.Rooms).select(commonQuery).eq('id', id);
   let data: RoomItem | null = null;
   if (res.error === null && res.data.length > 0) {
     const modifyRes: RoomItem[] = (res.data ?? []).map(

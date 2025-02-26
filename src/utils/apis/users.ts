@@ -6,12 +6,14 @@ import { PaginationParams } from '@/types';
 const TableName = {
   Users: 'users'
 };
+const commonQuery = '*, room:room_id (id, name)';
 export const apiGetUsers = async ({ page, limit }: PaginationParams) => {
   const pagination = await getPagination({ page, limit });
   const res = await supabase
     .from(TableName.Users)
-    .select('*, room:room_id (id, name)')
-    .range(pagination.start, pagination.end);
+    .select(commonQuery)
+    .range(pagination.start, pagination.end)
+    .order('room(name)', { ascending: true });
   const modifyRes: UserItem[] = res.data ?? [];
   if (res.status === 200) return { data: modifyRes };
   return { data: [] };
@@ -76,10 +78,7 @@ export const apiDeleteUser = async (id: number) => {
 };
 
 export const apiGetUser = async (id: number | string) => {
-  const res = await supabase
-    .from(TableName.Users)
-    .select('*, room:room_id (id, name)')
-    .eq('id', id);
+  const res = await supabase.from(TableName.Users).select(commonQuery).eq('id', id);
   let data: UserItem | null = null;
   if (res.error === null && res.data.length > 0) {
     const modifyRes: UserItem[] = (res.data ?? []).map(

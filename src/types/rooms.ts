@@ -1,4 +1,5 @@
 import { EConfigType } from './configs';
+import { UserItem } from './users';
 
 export type RoomItem = {
   id: number;
@@ -8,6 +9,7 @@ export type RoomItem = {
   config?: {
     type: EConfigType;
   };
+  users: UserItem[];
 };
 
 export type RoomBody = {

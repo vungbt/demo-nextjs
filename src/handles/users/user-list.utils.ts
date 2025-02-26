@@ -22,7 +22,7 @@ export default function UserListUtils(): UserListUtilsResult {
   const [data, setData] = useState<UserItem[]>([]);
 
   const [itemNeedDelete, setItemNeedDelete] = useState<UserItem | null>(null);
-  const [pagination, setPagination] = useState<PaginationParams>({ page: 1, limit: 10 });
+  const [pagination, setPagination] = useState<PaginationParams>({ page: 1, limit: 20 });
 
   useEffect(() => {
     fetchingData(pagination);

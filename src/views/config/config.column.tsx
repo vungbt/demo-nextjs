@@ -1,6 +1,7 @@
 import { RouterPaths } from '@/constants/common';
 import { CellLink, CellView } from '@/libraries/common';
 import CellActions from '@/libraries/common/table/cell-actions';
+import { CellConfig } from '@/libraries/common/table/cell-config';
 import { ConfigItem } from '@/types/configs';
 import { formatDate, formatPrice } from '@/utils/helpers/formatter';
 import { ColumnDef } from '@tanstack/react-table';
@@ -16,17 +17,18 @@ export const ConfigColumn = ({
     {
       accessorKey: 'id',
       header: '#',
-      cell: (props) => <CellView className="capitalize font-bold" content={props.row.original.id} />
+      cell: (props) => (
+        <CellLink
+          href={`${RouterPaths.Configs}/${props.row.original.id}`}
+          className="capitalize font-bold"
+          content={props.row.id}
+        />
+      )
     },
     {
       accessorKey: 'type',
       header: 'Type',
-      cell: (props) => (
-        <CellLink
-          href={`${RouterPaths.Configs}/${props.row.original.id}`}
-          content={props.row.original.type}
-        />
-      )
+      cell: (props) => <CellConfig type={props.row.original.type} />
     },
     {
       accessorKey: 'room_fee',

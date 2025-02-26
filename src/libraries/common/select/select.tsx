@@ -3,8 +3,8 @@ import { FormControl } from '../form';
 import clsx from 'clsx';
 
 export type SelectOptionItem = {
-  label: string;
-  value: string;
+  label: any;
+  value: any;
 };
 
 type SelectProps = Omit<React.InputHTMLAttributes<HTMLSelectElement>, 'size'> & {

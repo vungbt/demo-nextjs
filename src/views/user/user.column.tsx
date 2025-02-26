@@ -16,7 +16,7 @@ export const UserColumn = ({
     {
       accessorKey: 'id',
       header: '#',
-      cell: (props) => <CellView className="capitalize font-bold" content={props.row.original.id} />
+      cell: (props) => <CellView className="capitalize font-bold" content={props.row.id} />
     },
     {
       accessorKey: 'name',

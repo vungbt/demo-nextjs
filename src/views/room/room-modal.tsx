@@ -8,7 +8,7 @@ type RoomModalProps = {
 };
 export function RoomModal({ onClose, onConfirm, isOpen }: RoomModalProps) {
   return (
-    <ModalWrap id="user_modal" isOpen={isOpen} onClose={onClose} onConfirm={onConfirm}>
+    <ModalWrap id="room_modal" isOpen={isOpen} onClose={onClose} onConfirm={onConfirm}>
       RoomModal
     </ModalWrap>
   );
