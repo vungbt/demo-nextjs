@@ -8,16 +8,24 @@ const TableName = {
 };
 
 const commonQuery =
-  '*, room:room_id(id, name, config:config_id (id, room_fee, water_fee, electric_fee, common_service_fee, internet_fee, type, is_special_room), users(id))';
-export const apiGetMonths = async ({ page, limit, month }: PaginationParams) => {
+  '*, room:room_id(id, name, config:config_id (id, room_fee, water_fee, electric_fee, common_service_fee, internet_fee, type, is_special_room), users(id, name, phone))';
+export const apiGetMonths = async ({ page, limit, month, latest }: PaginationParams) => {
   const pagination = await getPagination({ page, limit });
-  const res = await supabase
+  const queries = supabase
     .from(TableName.Months)
     .select(commonQuery)
     .range(pagination.start, pagination.end)
     .order('month', { ascending: false })
-    .order('room(name)', { ascending: true })
-    .eq('month', month || EMonth.January);
+    .order('room(name)', { ascending: true });
+
+  if (latest) {
+    queries.order(latest, { ascending: false });
+  }
+  if (month) {
+    queries.eq('month', month || EMonth.January);
+  }
+
+  const res = await queries;
   const modifyRes: MonthItem[] = res.data ?? [];
   if (res.status === 200) return { data: modifyRes };
   return { data: [] };
@@ -45,6 +53,25 @@ export const apiCreateMonth = async (body: MonthBody) => {
         }) as MonthItem
     );
     data = modifyRes[0];
+  }
+  return data;
+};
+
+export const apiCreateManyMonth = async (body: MonthBody[]) => {
+  const res = await supabase.from(TableName.Months).insert(body).select('*');
+  let data: MonthItem[] = [];
+  if (res.error === null && res.data.length > 0) {
+    const modifyRes: MonthItem[] = (res.data ?? []).map(
+      (item: MonthItem) =>
+        ({
+          old_electric_number: item.old_electric_number,
+          new_electric_number: item.new_electric_number,
+          new_water_number: item.new_water_number,
+          old_water_number: item.old_water_number,
+          month: item.month
+        }) as MonthItem
+    );
+    data = modifyRes;
   }
   return data;
 };
@@ -92,7 +119,32 @@ export const apiGetMonth = async (id: number | string) => {
           new_electric_number: item.new_electric_number,
           new_water_number: item.new_water_number,
           old_water_number: item.old_water_number,
-          month: item.month
+          month: item.month,
+          room: item.room
+        }) as MonthItem
+    );
+    data = modifyRes[0];
+  }
+  return data;
+};
+
+export const apiGetMonthByRoom = async (roomId: number, month: number) => {
+  const res = await supabase
+    .from(TableName.Months)
+    .select(commonQuery)
+    .eq('room_id', roomId)
+    .eq('month', month);
+  let data: MonthItem | null = null;
+  if (res.error === null && res.data.length > 0) {
+    const modifyRes: MonthItem[] = (res.data ?? []).map(
+      (item: MonthItem) =>
+        ({
+          old_electric_number: item.old_electric_number,
+          new_electric_number: item.new_electric_number,
+          new_water_number: item.new_water_number,
+          old_water_number: item.old_water_number,
+          month: item.month,
+          room: item.room
         }) as MonthItem
     );
     data = modifyRes[0];

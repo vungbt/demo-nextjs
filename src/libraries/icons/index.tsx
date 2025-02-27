@@ -14,6 +14,11 @@ import Trash from './trash';
 import Users from './users';
 import Loading from './loading';
 import House from './house';
+import SidebarLeft from './sidebar-left';
+import SidebarRight from './sidebar-right';
+import Search from './search';
+import Plus from './plus';
+import PlusCircle from './plus-circle';
 
 export type IconProps = {
   className?: string;
@@ -39,7 +44,12 @@ const IconsDefine = {
   trash: 'trash',
   users: 'users',
   loading: 'loading',
-  house: 'house'
+  house: 'house',
+  'sibebar-right': 'sibebar-right',
+  'sibebar-left': 'sibebar-left',
+  search: 'search',
+  plus: 'plus',
+  'plus-circle': 'plus-circle'
 } as const;
 
 export type IconName = keyof typeof IconsDefine;
@@ -91,6 +101,21 @@ export const Icons: IconsType = {
   },
   house: (props: IconProps) => {
     return <House {...props} />;
+  },
+  'sibebar-left': (props: IconProps) => {
+    return <SidebarLeft {...props} />;
+  },
+  'sibebar-right': (props: IconProps) => {
+    return <SidebarRight {...props} />;
+  },
+  search: (props: IconProps) => {
+    return <Search {...props} />;
+  },
+  plus: (props: IconProps) => {
+    return <Plus {...props} />;
+  },
+  'plus-circle': (props: IconProps) => {
+    return <PlusCircle {...props} />;
   }
 };
 

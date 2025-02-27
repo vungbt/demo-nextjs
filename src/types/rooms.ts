@@ -1,4 +1,4 @@
-import { EConfigType } from './configs';
+import { ConfigItem } from './configs';
 import { UserItem } from './users';
 
 export type RoomItem = {
@@ -6,9 +6,7 @@ export type RoomItem = {
   name: string;
   created_at: Date | string | number;
   config_id: number;
-  config?: {
-    type: EConfigType;
-  };
+  config?: ConfigItem;
   users: UserItem[];
 };
 

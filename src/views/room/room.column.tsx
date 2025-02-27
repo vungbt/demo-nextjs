@@ -1,6 +1,7 @@
-import { ConfigTypeLabels, RouterPaths } from '@/constants/common';
+import { RouterPaths } from '@/constants/common';
 import { CellLink, CellView } from '@/libraries/common';
 import CellActions from '@/libraries/common/table/cell-actions';
+import { CellConfig } from '@/libraries/common/table/cell-config';
 import { EConfigType, RoomItem } from '@/types';
 import { formatDate } from '@/utils/helpers/formatter';
 import { ColumnDef } from '@tanstack/react-table';
@@ -31,11 +32,7 @@ export const RoomColumn = ({
     {
       accessorKey: 'config',
       header: 'Room type',
-      cell: (props) => (
-        <CellView
-          content={ConfigTypeLabels[props.row.original.config?.type || EConfigType.Deluxe]}
-        />
-      )
+      cell: (props) => <CellConfig type={props.row.original.config?.type || EConfigType.Deluxe} />
     },
     {
       accessorKey: 'users',

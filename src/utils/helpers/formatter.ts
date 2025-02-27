@@ -18,6 +18,7 @@ export enum EDateFormat {
   dd_MM_yyyy_HH_mm = 'dd/MM/yyyy HH:mm',
   dd_MM_yyyy_HH_mm_V2 = 'dd/MM/yyyy, HH:mm',
   DD_MM_YYYY = 'DD/MM/YYYY',
+  MM_YYYY = 'MM/yyyy',
   HH_mm = 'HH:mm',
   hh_mm = 'hh:mm'
 }

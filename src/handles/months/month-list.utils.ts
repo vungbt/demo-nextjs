@@ -12,6 +12,7 @@ type MonthListUtilsResult = {
   itemNeedDelete: MonthItem | null;
   onEdit: (item: MonthItem) => void;
   onDelete: (item: MonthItem) => void;
+  onDetail: (item: MonthItem) => void;
   setItemNeedDelete: (item: MonthItem | null) => void;
   onConfirmDelete: () => void;
 };
@@ -45,6 +46,10 @@ export default function MonthListUtils(): MonthListUtilsResult {
     router.push(`${RouterPaths.Manager}/${item.id}`);
   };
   const onDelete = (item: MonthItem) => setItemNeedDelete(item);
+  const onDetail = (item: MonthItem) => {
+    if (!item || !item.id) return toastError('Month record not found.');
+    router.push(`${RouterPaths.Manager}/${item.id}/bill`);
+  };
 
   const onConfirmDelete = async () => {
     if (!itemNeedDelete || !itemNeedDelete.id) return toastError('Month record not found.');
@@ -61,6 +66,7 @@ export default function MonthListUtils(): MonthListUtilsResult {
     itemNeedDelete,
     onEdit,
     onDelete,
+    onDetail,
     setItemNeedDelete,
     onConfirmDelete
   };

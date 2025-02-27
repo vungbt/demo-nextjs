@@ -10,8 +10,16 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
 export default function MonthsPage() {
-  const { data, loading, itemNeedDelete, onEdit, onDelete, setItemNeedDelete, onConfirmDelete } =
-    MonthListUtils();
+  const {
+    data,
+    loading,
+    itemNeedDelete,
+    onEdit,
+    onDelete,
+    onDetail,
+    setItemNeedDelete,
+    onConfirmDelete
+  } = MonthListUtils();
   const { actions } = useTopBar();
   const router = useRouter();
 
@@ -36,7 +44,8 @@ export default function MonthsPage() {
       <Table<MonthItem>
         columns={MonthColumn({
           onDelete,
-          onEdit
+          onEdit,
+          onDetail
         })}
         data={data}
         loading={loading}

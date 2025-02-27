@@ -18,6 +18,8 @@ export type MonthBody = {
   new_water_number: number;
   old_water_number: number;
   month: EMonth;
+  room_id: number;
+  room_name?: string | null;
 };
 
 export enum EMonth {

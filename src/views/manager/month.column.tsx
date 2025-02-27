@@ -7,10 +7,12 @@ import { ColumnDef } from '@tanstack/react-table';
 
 export const MonthColumn = ({
   onEdit,
-  onDelete
+  onDelete,
+  onDetail
 }: {
   onEdit: (item: MonthItem) => void;
   onDelete: (item: MonthItem) => void;
+  onDetail: (item: MonthItem) => void;
 }): ColumnDef<MonthItem>[] => {
   return [
     {
@@ -68,6 +70,7 @@ export const MonthColumn = ({
         <CellActions
           onEdit={() => onEdit(props.row.original)}
           onDelete={() => onDelete(props.row.original)}
+          onView={() => onDetail(props.row.original)}
         />
       )
     }
